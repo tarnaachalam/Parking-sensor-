@@ -1,0 +1,145 @@
+int pin2 = 2; 
+int pin3 = 3;
+int pin4 = 4;
+int pin5 = 5;
+int pin6 = 6;
+int pin7 = 7;
+int pin8 = 8;
+int Buzzer = 13;
+const int trigPin = 10; //connects to the trigger pin on the distance sensor
+const int echoPin = 9; //connects to the echo pin on the distance sensor
+const int maxRange = 23; // Maximum range (cm)
+const int minRange = 0.1; // Minimum range (cm)
+float distance = 0; //stores the distance measured by the distance sensor
+
+void setup() {
+  Serial.begin (9600); //set up a serial connection with the computer
+  pinMode(trigPin, OUTPUT); //the trigger pin will output pulses of electricity
+  pinMode(echoPin, INPUT); //the echo pin will measure the duration of pulses coming back from the
+//distance sensor
+  pinMode(pin2, OUTPUT); 
+  pinMode(pin3, OUTPUT);
+  pinMode(pin4, OUTPUT);
+  pinMode(pin5, OUTPUT);
+  pinMode(pin6, OUTPUT);
+  pinMode(pin7, OUTPUT);
+  pinMode(pin8, OUTPUT);
+  pinMode(Buzzer,OUTPUT); // Declare Buzzer as output
+}
+void loop() {
+  distance = getDistance(); //variable to store the distance measured by the sensor
+  Serial.print("Distance: "); //print the results to the Serial Monitor
+  if (distance >= maxRange || distance <= minRange){
+  Serial.println("Out of Range");
+  } else {
+  Serial.print(distance); //print the distance that was measured
+  Serial.println(" cm"); //print units after the distance
+  }
+  if (2.55 < distance && distance < 5.09) { //displays C for too close
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, LOW);
+  digitalWrite(pin4, LOW);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, HIGH);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, LOW); 
+  digitalWrite(Buzzer,HIGH); 
+  } else if (2.55 < distance && distance < 5.09) { //displays 2
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, LOW);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, HIGH);
+  digitalWrite(pin7, LOW);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,HIGH); 
+  } else if (5.09 < distance && distance < 7.63) { //displays 3
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, LOW);
+  digitalWrite(pin7, LOW);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,HIGH);      
+  } else if (7.63 < distance && distance < 10.16) { //displays 4
+  digitalWrite(pin2, LOW);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, LOW);
+  digitalWrite(pin6, LOW);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,LOW); 
+  } else if (10.17 < distance && distance < 12.8) { //displays 5
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, LOW);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, LOW);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,LOW);
+  } else if (12.8 < distance && distance < 15.25) { //displays 6
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, LOW);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, HIGH);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,LOW);
+  } else if (15.25 < distance && distance < 17.79) { //displays 7
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, LOW);
+  digitalWrite(pin6, LOW);
+  digitalWrite(pin7, LOW);
+  digitalWrite(pin8, LOW);
+  digitalWrite(Buzzer,LOW);
+  } else if (17.79 < distance && distance < 20.33) { //displays 8
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, HIGH);
+  digitalWrite(pin6, HIGH);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,LOW);
+  } else if (20.33 < distance && distance < 22.87) { //displays 9
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, HIGH);
+  digitalWrite(pin4, HIGH);
+  digitalWrite(pin5, LOW);
+  digitalWrite(pin6, LOW);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH);
+  digitalWrite(Buzzer,LOW);
+  } else { //too far displays F 
+  digitalWrite(pin2, HIGH);
+  digitalWrite(pin3, LOW);
+  digitalWrite(pin4, LOW);
+  digitalWrite(pin5, LOW);
+  digitalWrite(pin6, HIGH);
+  digitalWrite(pin7, HIGH);
+  digitalWrite(pin8, HIGH); 
+  digitalWrite(Buzzer,LOW);  
+  }
+  delay(50);                                //delay 50ms between each reading
+}
+//------------------FUNCTIONS-------------------------------
+float getDistance() {                                 //RETURNS THE DISTANCE MEASURED BY THE HC-SR04 DISTANCE SENSOR
+  float echoTime;                                     //variable to store the time it takes for a ping to bounce off an object
+  float calculatedDistance;                           //variable to store the distance calculated from the echo time
+  
+  digitalWrite(trigPin, HIGH);                        //Trigger the ultrasonic sensor by 10ms long HIGH
+  delayMicroseconds(10);                
+  digitalWrite(trigPin, LOW);               
+  echoTime = pulseIn(echoPin, HIGH);                  //use the pulsein command to see how long it takes for the
+                                                      //pulse to bounce back to the sensor – measured in microseconds (us)
+  calculatedDistance = (echoTime *0.0343) / 2;        //calculate the distance of the object that reflected the pulse
+                                                      //(half the bounce time multiplied by the speed of sound)
+                                                      // speed of sound in dry air at 20 °C = 0.0343 cm/us
+  return calculatedDistance;                          //send back the distance that was calculated
+}
