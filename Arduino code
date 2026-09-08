@@ -128,7 +128,7 @@ void loop() {
   }
   delay(50);                                //delay 50ms between each reading
 }
-//------------------FUNCTIONS-------------------------------
+
 float getDistance() {                                 //RETURNS THE DISTANCE MEASURED BY THE HC-SR04 DISTANCE SENSOR
   float echoTime;                                     //variable to store the time it takes for a ping to bounce off an object
   float calculatedDistance;                           //variable to store the distance calculated from the echo time
